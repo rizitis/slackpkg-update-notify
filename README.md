@@ -3,6 +3,11 @@ Shows a popup if new Slackware patches or updates found
 
 ## Installation
 
+## Binary
+Follow indroduction on [release](https://github.com/rizitis/slackpkg-update-notify/releases)
+
+## Build
+
 1.  `git clone   https://github.com/rizitis/slackpkg-update-notify.git`
 2.  `cd slackpkg-update-notify/SlackBuild || exit 1 `
 3.  `su -c "bash slackpkg-update-notify.SlackBuild"`
