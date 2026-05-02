@@ -1,0 +1,63 @@
+#!/bin/bash
+
+# Ioannis Anagnostakis (rizitis) 2026-04
+# slk-changelog-check
+# Runs from /etc/rc.d/rc.local at boot.
+# Fetches the first 3 lines of Slackware's ChangeLog.txt and compares
+# them against the previously cached version. If they differ, it writes
+# a flag file that slk-update-notify will pick up at login.
+
+CHANGELOG_URL=$(grep -v '^\s*#' /etc/slackpkg/mirrors | grep -v '^\s*$' | xargs)
+CHANGELOG_URL="${CHANGELOG_URL%/}/"
+CHANGELOG_FILE="${CHANGELOG_URL}ChangeLog.txt"
+CACHE_DIR="/var/cache/slk-changelog"
+CACHE_FILE="${CACHE_DIR}/last_seen.txt"
+FLAG_FILE="${CACHE_DIR}/updates_pending"
+FETCH_LINES=3
+WGET_TIMEOUT=20
+LOG_TAG="slk-changelog-check"
+
+log() { logger -t "${LOG_TAG}" "$*"; }
+
+# --- Be sure we have a valid line in /etc/slackpkg/mirrors ---
+[ "$(printf "%s\n" "$CHANGELOG_URL" | wc -l)" -ne 1 ] && {
+    log "Err: /etc/slackpkg/mirrors expected exactly 1 uncommented line"
+    exit 1
+}
+
+# --- Ensure cache directory exists ---
+mkdir -p "${CACHE_DIR}" || { log "Cannot create ${CACHE_DIR}"; exit 1; }
+
+# --- Fetch first N lines of the ChangeLog ---
+CURRENT="$(wget -q -T "${WGET_TIMEOUT}" -O - "${CHANGELOG_FILE}" 2>/dev/null \
+           | head -n "${FETCH_LINES}")"
+
+if [[ -z "${CURRENT}" ]]; then
+    log "Failed to fetch ChangeLog (network unavailable or timeout)."
+    exit 1
+fi
+
+log "Fetched ${FETCH_LINES} lines from ChangeLog."
+
+# --- First run: just cache, no notification ---
+if [[ ! -f "${CACHE_FILE}" ]]; then
+    printf '%s\n' "${CURRENT}" > "${CACHE_FILE}"
+    log "First run — baseline cached. No notification."
+    exit 0
+fi
+
+PREVIOUS="$(cat "${CACHE_FILE}")"
+
+# --- Compare ---
+if [[ "${CURRENT}" != "${PREVIOUS}" ]]; then
+    log "ChangeLog changed — writing flag for desktop notification."
+    # Save new baseline
+    printf '%s\n' "${CURRENT}" > "${CACHE_FILE}"
+    # Write flag so the desktop notifier knows to pop up
+    touch "${FLAG_FILE}"
+    chmod 664 "${FLAG_FILE}"
+else
+    log "No changes detected."
+fi
+
+exit 0

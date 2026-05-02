@@ -1,0 +1,32 @@
+#!/bin/bash
+# slk-update-notify
+# Runs at login via ~/.config/autostart/slk-update-notify.desktop
+# Checks for the flag written by slk-changelog-check and shows a notify
+# popup if Slackware updates were detected since the last boot.
+
+FLAG_FILE="/var/cache/slk-changelog/updates_pending"
+
+[[ -f "${FLAG_FILE}" ]] || exit 0
+
+sleep 150
+
+rm -f "${FLAG_FILE}"
+
+if [[ "${XDG_CURRENT_DESKTOP}" == "KDE" ]]; then
+    kdialog \
+        --icon system-software-update \
+        --msgbox "Slackware system updates found!" \
+        --title "Slackpkg Update Checker"
+elif [[ "${XDG_CURRENT_DESKTOP}" == "XFCE" ]] && command -v zenity &>/dev/null; then
+    zenity \
+        --info \
+        --title "Slackpkg Update Checker" \
+        --text "Slackware system updates found!"
+else
+    notify-send \
+        --icon=system-software-update \
+        "Slackpkg Update Checker" \
+        "Slackware system updates found!"
+fi
+
+exit 0

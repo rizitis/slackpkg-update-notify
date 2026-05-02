@@ -1,0 +1,6 @@
+ # Slackpkg update notify
+if [ -x /usr/bin/slk-changelog-check ]; then
+logger -t rc.local "starting slk-changelog-check"
+echo "starting slk-changelog-check" 
+sleep 120 && /usr/bin/slk-changelog-check &
+fi

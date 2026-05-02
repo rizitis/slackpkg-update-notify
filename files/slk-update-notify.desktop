@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Slackware Update Notifier
+Comment=Shows a popup if new Slackware patches or updates found
+Exec=/usr/bin/slk-update-notify
+Icon=system-software-update
+Terminal=false
+Categories=System;
+X-KDE-autostart-phase=2

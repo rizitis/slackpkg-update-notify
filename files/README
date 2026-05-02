@@ -1,0 +1,3 @@
+After installation finish as root:
+1. copy rc.txt lines and paste them in /etc/rc.d/rc.local
+2. And as user copy slk-update-notify.desktop to  ~/.config/autostart/
