@@ -21,3 +21,13 @@ fi
 
 
 >  And as user copy from files/slk-update-notify.desktop to  ~/.config/autostart/
+
+
+You cat watch behavor from `/var/log/messages` something like this: `cat /var/log/messages | grep slk`
+
+```
+May  2 16:56:24 hackbox rc.local: starting slk-changelog-check
+May  2 16:58:24 hackbox slk-changelog-check: Fetched 3 lines from ChangeLog.
+May  2 16:58:24 hackbox slk-changelog-check: No changes detected.
+
+```
