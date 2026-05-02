@@ -45,6 +45,7 @@ cd ../scripts
 cp slk-* $PKG/usr/bin
 chmod +x $PKG/usr/bin/*
 mkdir -p $PKG/usr/doc/${PKGNAM}-$VERSION
+cp *.SlackBuild $PKG/usr/doc/${PKGNAM}-$VERSION
 cd ..
 cp -R \
  files LICENSE README.md  \
