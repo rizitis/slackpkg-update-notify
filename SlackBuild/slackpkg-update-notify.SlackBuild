@@ -17,7 +17,7 @@
 cd $(dirname $0) ; CWD=$(pwd)
 
 PKGNAM=slackpkg-update-notify
-VERSION=0.1
+VERSION=0.2
 BUILD=${BUILD:-1}
 
 ARCH=noarch
@@ -39,6 +39,8 @@ cp slk-* $PKG/usr/bin
 chmod +x $PKG/usr/bin/*
 mkdir -p $PKG/usr/doc/${PKGNAM}-$VERSION
 cd ..
+mkdir -p $PKG/etc/xdg/autostart/
+cat files/slk-update-notify.desktop > $PKG/etc/xdg/autostart/slk-update-notify.desktop
 cp -R \
  files LICENSE README.md  \
   $PKG/usr/doc/${PKGNAM}-$VERSION
