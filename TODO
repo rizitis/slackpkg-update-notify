@@ -1,5 +1,6 @@
+Done but not tested.
++---+
 if kdialog installed will be used first
 elif zenity 
 else system-notify
 
-+---+
