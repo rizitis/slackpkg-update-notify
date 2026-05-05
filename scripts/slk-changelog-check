@@ -20,10 +20,12 @@ LOG_TAG="slk-changelog-check"
 log() { logger -t "${LOG_TAG}" "$*"; }
 
 # --- Be sure we have a valid line in /etc/slackpkg/mirrors ---
-[ "$(printf "%s\n" "$CHANGELOG_URL" | wc -l)" -ne 1 ] && {
+CHANGELOG_URL=$(grep -v '^\s*#' /etc/slackpkg/mirrors | grep -v '^\s*$')
+[ "$(printf '%s\n' "${CHANGELOG_URL}" | wc -l)" -ne 1 ] && {
     log "Err: /etc/slackpkg/mirrors expected exactly 1 uncommented line"
     exit 1
 }
+CHANGELOG_URL="${CHANGELOG_URL%/}/"
 
 # --- Ensure cache directory exists ---
 mkdir -p "${CACHE_DIR}" || { log "Cannot create ${CACHE_DIR}"; exit 1; }

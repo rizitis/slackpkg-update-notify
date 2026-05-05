@@ -1,32 +1,39 @@
 #!/bin/bash
-# slk-update-notify
-# Runs at login via /etc/xdg/autostart/slk-update-notify.desktop
-# Checks for the flag written by slk-changelog-check and shows a notify
-# popup if Slackware updates were detected since the last boot.
+# slk-notify-daemon.sh
+# Waits for updates_pending flag and notifies the user.
 
 FLAG_FILE="/var/cache/slk-changelog/updates_pending"
+LOCK_FILE="/tmp/slk-notify.lock"
 
-[[ -f "${FLAG_FILE}" ]] || exit 0
+# --- Lock: only one instance allowed ---
+exec 9>"${LOCK_FILE}"
+flock -n 9 || { echo "Already running. Exiting."; exit 1; }
 
+# --- Notification function (non-blocking) ---
+send_notification() {
+    if command -v kdialog &>/dev/null; then
+        kdialog --icon system-software-update \
+                --passivepopup "Slackware system updates found!" 10 \
+                --title "Slackpkg Update Checker" &
+    elif command -v zenity &>/dev/null; then
+        zenity --notification \
+               --text "Slackware system updates found!" &
+    else
+        notify-send \
+            --icon=system-software-update \
+            "Slackpkg Update Checker" \
+            "Slackware system updates found!"
+    fi
+}
+
+# --- Wait for session to stabilize ---
 sleep 150
 
-rm -f "${FLAG_FILE}"
-
-if command -v kdialog &>/dev/null; then
-    kdialog \
-        --icon system-software-update \
-        --msgbox "Slackware system updates found!" \
-        --title "Slackpkg Update Checker"
-elif command -v zenity &>/dev/null; then
-    zenity \
-        --info \
-        --title "Slackpkg Update Checker" \
-        --text "Slackware system updates found!"
-else
-    notify-send \
-        --icon=system-software-update \
-        "Slackpkg Update Checker" \
-        "Slackware system updates found!"
-fi
-
-exit 0
+# --- Main polling loop ---
+while true; do
+    if [[ -f "${FLAG_FILE}" ]]; then
+        rm -f "${FLAG_FILE}"
+        send_notification
+    fi
+    sleep 120
+done
