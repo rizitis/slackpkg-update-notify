@@ -16,6 +16,18 @@ sleep 120 && /usr/bin/slk-changelog-check &
 fi
 ```
 
+create if not exist a /etc/rc.d/rc.local_shutdown
+copy paste in:
+```
+#!/bin/bash
+#
+# Remove slk-notify lock file from /tmp
+if [ -f /tmp/slk-notify.lock ]; then
+    rm -f /tmp/slk-notify.lock
+fi
+```
+chmod +x /etc/rc.d/rc.local_shutdown
+
 ### Optional: run every 6 hours via cron
 
 By default `slk-changelog-check` runs once at boot from `rc.local`.  
