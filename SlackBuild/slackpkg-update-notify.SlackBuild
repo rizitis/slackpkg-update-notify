@@ -17,7 +17,7 @@
 cd $(dirname $0) ; CWD=$(pwd)
 
 PKGNAM=slackpkg-update-notify
-VERSION=0.2
+VERSION=0.3
 BUILD=${BUILD:-1}
 
 ARCH=noarch
