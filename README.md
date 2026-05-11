@@ -2,6 +2,10 @@
 
 ## Build
 
+The best way to build it from source latest version is  [SlackBuilds.org](https://slackbuilds.org/repository/15.0/system/slackpkg-update-notify/)
+
+If for some reason you want to build master branch:
+
 1. `git clone https://github.com/rizitis/slackpkg-update-notify.git`
 2. `cd slackpkg-update-notify/SlackBuild || exit 1 `
 3. `su -c "bash slackpkg-update-notify.SlackBuild"`
@@ -63,3 +67,13 @@ May 2 16:56:24 hackbox rc.local: starting slk-changelog-check
 May 2 16:58:24 hackbox slk-changelog-check: Fetched 3 lines from ChangeLog.
 May 2 16:58:24 hackbox slk-changelog-check: No changes detected.
 ```
+
+---
+
+## Binary 
+
+Since its a noarch packages a slackware package ready for installation might exist on [Releases](https://github.com/rizitis/slackpkg-update-notify/releases)
+<br>
+if so, you can download it and use `upgradepkg --install-new --reinstall slackpkg-update-notify-*-noarch-1_custom.txz `  
+<br>
+But its no suggested, build from source and install is only few seconds job...
