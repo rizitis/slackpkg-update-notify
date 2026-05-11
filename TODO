@@ -1,3 +1,7 @@
+Change time for kdialog to 0 (need testing)
++---+
+Tested LGTM
++---+
 Done but not tested.
 +---+
 if kdialog installed will be used first
