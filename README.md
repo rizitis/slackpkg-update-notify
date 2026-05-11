@@ -72,8 +72,10 @@ May 2 16:58:24 hackbox slk-changelog-check: No changes detected.
 
 ## Binary 
 
-Since its a noarch packages a slackware package ready for installation might exist on [Releases](https://github.com/rizitis/slackpkg-update-notify/releases)
+A  noarch  slackware package ready for installation might exist on [Releases](https://github.com/rizitis/slackpkg-update-notify/releases)
 <br>
-if so, you can download it and use `upgradepkg --install-new --reinstall slackpkg-update-notify-*-noarch-1_custom.txz `  
-<br>
-But its no suggested, build from source and install is only few seconds job...
+if so, you can download and use it for installation
+```
+# upgradepkg --install-new --reinstall slackpkg-update-notify-*-noarch-1_custom.txz
+ ``` 
+But  build and install from source  is always preferred
