@@ -2,7 +2,7 @@
 
 ## Build
 
-The best way to build it from source latest version is  [SlackBuilds.org](https://slackbuilds.org/repository/15.0/system/slackpkg-update-notify/)
+The best way to build  from source (latest version) is  [SlackBuilds.org](https://slackbuilds.org/repository/15.0/system/slackpkg-update-notify/)
 
 If for some reason you want to build master branch:
 
