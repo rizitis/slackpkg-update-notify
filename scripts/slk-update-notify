@@ -13,11 +13,12 @@ flock -n 9 || { echo "Already running. Exiting."; exit 1; }
 send_notification() {
     if command -v kdialog &>/dev/null; then
         kdialog --icon system-software-update \
-                --passivepopup "Slackware system updates found!" 0 \
-                --title "Slackpkg Update Checker" &
+                --title "Slackpkg Update Checker" \
+                --msgbox "Slackware system updates found!" &
     elif command -v zenity &>/dev/null; then
-        zenity --notification \
-               --text "Slackware system updates found!" &
+        zenity --info \
+               --title="Slackpkg Update Checker" \
+               --text="Slackware system updates found!" &
     else
         notify-send \
             --icon=system-software-update \
