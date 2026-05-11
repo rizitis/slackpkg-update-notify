@@ -1,3 +1,5 @@
+![](./slackpkg-updates-notify.png)
+
 ## Build
 
 1. `git clone https://github.com/rizitis/slackpkg-update-notify.git`
